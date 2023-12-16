@@ -17,7 +17,12 @@ class DomainController extends Controller
         }
         if($page->is_redirect)
             return redirect($page->data,301);
-        else
-            return view('pages.'.$page->data,compact('page','domain'));
+        else {
+            try {
+                return view('pages.' . $page->data, compact('page', 'domain'));
+            }catch (\Exception $exception) {
+                return $exception->getMessage();
+            }
+        }
     }
 }
