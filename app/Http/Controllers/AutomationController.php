@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Autopost;
 use App\Models\Checkers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -391,5 +392,10 @@ class AutomationController extends Controller
             return $this->QueryIrWhois($domain);
         }
     }
-
+    public function autoPost($id){
+        $post=Autopost::where('status',0)->where('source_id',$id)->firstOrFail();
+        $post->status=100;
+//        $post->save();
+        return $post;
+    }
 }
