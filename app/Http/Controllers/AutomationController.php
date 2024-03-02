@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Autopost;
 use App\Models\Checkers;
+use App\Services\StringService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -396,6 +397,11 @@ class AutomationController extends Controller
         $post=Autopost::where('status',0)->where('source_id',$id)->firstOrFail();
         $post->status=100;
 //        $post->save();
+        $stringService=new StringService();
+        $html=$post->content;
+        $toc=$stringService->getStringBetween('<div id="ez-toc-container"','</div>',$html);
+        return $toc;
+        $post->nonhtml=strip_tags($html);
         return $post;
     }
 }
