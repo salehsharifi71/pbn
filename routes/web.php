@@ -17,6 +17,7 @@ use App\Http\Controllers\AutomationController;
 
 Route::any('/check-domains-status',[AutomationController::class,'chkDomain'])->name('chkDomain');
 Route::any('/auto-post-script/{id}',[AutomationController::class,'autoPost'])->name('autoPost');
+Route::any('/generateHTML',[AutomationController::class,'generateHTML'])->name('generateHTML');
 
 Route::any('/{lvl1?}/{lvl2?}/{lvl13?}/{lvl4?}',[DomainController::class,'index'])->name('home');
 

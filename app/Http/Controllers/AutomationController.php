@@ -413,4 +413,17 @@ class AutomationController extends Controller
         $post->nonhtml=strip_tags($html);
         return $post;
     }
+    public function generateHTML(){
+        if(\request()->has('title')){
+            $html='<img src="'.\request('img').'">
+'.\request('content');
+            $stringService=new StringService();
+            if(strpos($html,\request('title')))
+                $html=$stringService->str_replace_first(\request('title'),'<a href="'.\request('title').'">'.\request('title').'</a>',$html);
+            else
+                $html.='<br>'.'<a href="'.\request('title').'">'.\request('title').'</a>';
+            return view('forms.makeHTML',compact('html'));
+        }
+        return view('forms.makeHTML');
+    }
 }
