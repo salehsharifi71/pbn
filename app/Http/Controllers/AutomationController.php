@@ -400,7 +400,14 @@ class AutomationController extends Controller
         $stringService=new StringService();
         $html=$post->content;
         $toc=$stringService->getStringBetween('<div id="ez-toc-container"','</div>',$html);
-        return $toc;
+        $html=str_replace('<div id="ez-toc-container"'.$toc.'</div>','',$html);
+        $ads=$stringService->getStringBetween('<div class="firstOfContent">','</div>',$html);
+        $html=str_replace('<div class="firstOfContent">'.$ads.'</div>','',$html);
+        $ads=$stringService->getStringBetween('<div class="endOfContent">','</div>',$html);
+        $html=str_replace('<div class="endOfContent">'.$ads.'</div>','',$html);
+        $ads=$stringService->getStringBetween('<div class="sticky-down">','</div>',$html);
+        $html=str_replace('<div class="sticky-down">'.$ads.'</div>','',$html);
+        return $html;
         $post->nonhtml=strip_tags($html);
         return $post;
     }

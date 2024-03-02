@@ -128,7 +128,7 @@ class StringService
             $betweenLength = $toPosition - $fromPosition;
             return substr($haystack, $fromPosition, $betweenLength);
         }catch (\Exception $e){
-            return false;
+            return 'false';
         }
     }
     public function hideMobile($mobile=''){
