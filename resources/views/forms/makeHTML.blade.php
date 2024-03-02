@@ -103,6 +103,7 @@
         <input type="text" name="img" id="img" placeholder="img">
         <input type="text" name="url" id="url" placeholder="url">
         <textarea name="content" id="content"></textarea>
+        <button type="submit" id="submit">generate</button>
     </form>
 @endif
 </body>
