@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('target');
             $table->string('url');
             $table->string('title');
+            $table->string('img');
             $table->text('content');
             $table->integer('status')->default(0);
             $table->timestamps();
