@@ -408,7 +408,8 @@ class AutomationController extends Controller
         $html=str_replace('<div class="endOfContent">'.$ads.'</div>','',$html);
         $ads=$stringService->getStringBetween('<div class="sticky-down">','</div>',$html);
         $html=str_replace('<div class="sticky-down">'.$ads.'</div>','',$html);
-//        $html=str_replace('\n' ,'',$html);
+        $html=str_replace('\n' ,'
+',$html);
         $post->nonhtml=strip_tags($html);
         return $post;
     }
