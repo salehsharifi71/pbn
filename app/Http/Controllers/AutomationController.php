@@ -394,7 +394,9 @@ class AutomationController extends Controller
         }
     }
     public function autoPost($id){
-        $post=Autopost::where('status',0)->where('source_id',$id)->firstOrFail();
+        $post=Autopost::where('status',0)->where('source_id',$id)->first();
+        if(!$post)
+            return json_encode([]);
         $post->status=100;
 //        $post->save();
         $stringService=new StringService();
