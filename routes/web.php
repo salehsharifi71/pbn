@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\AutomationController;
+use App\Http\Controllers\AupostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,8 @@ use App\Http\Controllers\AutomationController;
 */
 
 Route::any('/check-domains-status',[AutomationController::class,'chkDomain'])->name('chkDomain');
-Route::any('/auto-post-script/{id}',[AutomationController::class,'autoPost'])->name('autoPost');
-Route::any('/generateHTML',[AutomationController::class,'generateHTML'])->name('generateHTML');
+Route::any('/auto-post-script/{id}',[AupostController::class,'autoPost'])->name('autoPost');
+Route::any('/generateHTML',[AupostController::class,'generateHTML'])->name('generateHTML');
 
 Route::any('/{lvl1?}/{lvl2?}/{lvl13?}/{lvl4?}',[DomainController::class,'index'])->name('home');
 
