@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('au_post_targets', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
             $table->boolean('is_active')->default(1);
             $table->integer('kind')->default(1);
             $table->string('webservice')->nullable();

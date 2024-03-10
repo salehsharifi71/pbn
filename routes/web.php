@@ -19,6 +19,7 @@ use App\Http\Controllers\AupostController;
 Route::any('/check-domains-status',[AutomationController::class,'chkDomain'])->name('chkDomain');
 Route::any('/auto-post-script/{id}',[AupostController::class,'autoPost'])->name('autoPost');
 Route::any('/generateHTML',[AupostController::class,'generateHTML'])->name('generateHTML');
+Route::any('/getContentByCron',[AupostController::class,'getContentByCron']);
 
 Route::any('/{lvl1?}/{lvl2?}/{lvl13?}/{lvl4?}',[DomainController::class,'index'])->name('home');
 

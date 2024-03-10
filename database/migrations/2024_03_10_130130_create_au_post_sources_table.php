@@ -16,6 +16,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(1);
             $table->integer('kind')->default(1);
             $table->string('webservice')->nullable();
+            $table->text('available_targets')->nullable();
+            $table->integer('share_rate')->default(50);
             $table->timestamps();
         });
     }
