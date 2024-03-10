@@ -12,7 +12,7 @@ class AupostController extends Controller
 {
     //
     public function getContentByCron(){
-        $source=AuPostSource::where('is_active',1)->where('updated_at','<',Carbon::now()->subMinutes(60))->firstOrFail();
+        $source=AuPostSource::where('is_active',1)->where('updated_at','<',Carbon::now()->subMinutes(60)->toDateTimeString())->firstOrFail();
         $source->touch();
         if($source->kind==1){
             $url=$source->webservice;
