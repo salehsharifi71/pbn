@@ -75,7 +75,7 @@ class AupostController extends Controller
                 $chat_id=$chat_id->meta_value;
                 $caption= urlencode('<a href="'.$link.'">'.$title.'</a>
 '.$short);
-                @file_get_contents('https://api.telegram.org/bot1201206140:AAFw5paUINbbvrv8lkH_GhKjpfdK1UMvQT0/sendPhoto?caption='.$caption.'&chat_id='.$chat_id.'&photo='.$img);
+                @file_get_contents('https://api.telegram.org/bot1201206140:AAFw5paUINbbvrv8lkH_GhKjpfdK1UMvQT0/sendPhoto?caption='.$caption.'&chat_id='.$chat_id.'&parse_mode=HTML&photo='.$img);
             }
 
         }
