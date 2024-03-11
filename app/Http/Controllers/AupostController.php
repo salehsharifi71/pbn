@@ -68,10 +68,10 @@ class AupostController extends Controller
     }
     public function sendImmediately($source,$link,$img,$title,$description,$short){
         //is telegram token available
-        if($token=AuPostMetas::where('kind','source')->where('p_id',$source->id)->where('meta_key','tg_bot')->first()){
+        if($token=AuPostMetas::where('kind','source')->where('ap_id',$source->id)->where('meta_key','tg_bot')->first()){
             $token=$token->meta_value;
             //get telegram channel
-            if($chat_id=AuPostMetas::where('kind','source')->where('p_id',$source->id)->where('meta_key','chat_id')->first()){
+            if($chat_id=AuPostMetas::where('kind','source')->where('ap_id',$source->id)->where('meta_key','chat_id')->first()){
                 $chat_id=$chat_id->meta_value;
                 $caption= urlencode('<a href="'.$link.'">'.$title.'</a>
 '.$short);
