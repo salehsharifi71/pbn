@@ -50,7 +50,7 @@ class AupostController extends Controller
                     $this->sendImmediately($source,$link,$img,$title,$description,$short);
                     $targets=explode(',',$source->available_targets);
                     foreach ($targets as $target){
-                        echo $target.',';
+//                        echo $target.',';
                         $rand=rand(0,100);
                         if($source->share_rate<$rand){
                             $postQue=new AuPostQues();
@@ -80,7 +80,7 @@ class AupostController extends Controller
                 try {
                     echo file_get_contents('https://api.telegram.org/bot'.$token.'/sendPhoto?caption=' . $caption . '&chat_id=' . $chat_id . '&parse_mode=HTML&photo=' . $img);
                 }catch (\Exception $exception){
-                    echo $exception->getMessage();
+//                    echo $exception->getMessage();
                 }
             }
 
