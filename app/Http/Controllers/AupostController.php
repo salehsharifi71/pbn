@@ -16,6 +16,7 @@ class AupostController extends Controller
 
         $source=AuPostSource::where('is_active',1)->where('updated_at','<',Carbon::now()->subMinutes(60)->toDateTimeString())->firstOrFail();
         $source->touch();
+        echo $source->id.' :<br>';
         if($source->kind==1){
             $url=$source->webservice;
             $articles=@file_get_contents($url);
@@ -49,6 +50,7 @@ class AupostController extends Controller
                     $this->sendImmediately($source,$link,$img,$title,$description,$short);
                     $targets=explode(',',$source->available_targets);
                     foreach ($targets as $target){
+                        echo $target.',';
                         $rand=rand(0,100);
                         if($source->share_rate<$rand){
                             $postQue=new AuPostQues();
@@ -75,7 +77,7 @@ class AupostController extends Controller
                 $chat_id=$chat_id->meta_value;
                 $caption= urlencode('<a href="'.$link.'">'.$title.'</a>
 '.$short);
-                @file_get_contents('https://api.telegram.org/bot1201206140:AAFw5paUINbbvrv8lkH_GhKjpfdK1UMvQT0/sendPhoto?caption='.$caption.'&chat_id='.$chat_id.'&parse_mode=HTML&photo='.$img);
+               echo @file_get_contents('https://api.telegram.org/bot1201206140:AAFw5paUINbbvrv8lkH_GhKjpfdK1UMvQT0/sendPhoto?caption='.$caption.'&chat_id='.$chat_id.'&parse_mode=HTML&photo='.$img);
             }
 
         }
