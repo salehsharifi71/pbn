@@ -71,16 +71,14 @@ class AupostController extends Controller
     public function sendImmediately($source,$link,$img,$title,$description,$short){
         //is telegram token available
         if($token=AuPostMetas::where('kind','source')->where('ap_id',$source->id)->where('meta_key','tg_bot')->first()){
-            echo '<br>token';
             $token=$token->meta_value;
             //get telegram channel
             if($chat_id=AuPostMetas::where('kind','source')->where('ap_id',$source->id)->where('meta_key','chat_id')->first()){
                 $chat_id=$chat_id->meta_value;
-                echo '<br>chid';
                 $caption= urlencode('<a href="'.$link.'">'.$title.'</a>
 '.$short);
                 try {
-                    echo file_get_contents('https://api.telegram.org/bot1201206140:AAFw5paUINbbvrv8lkH_GhKjpfdK1UMvQT0/sendPhoto?caption=' . $caption . '&chat_id=' . $chat_id . '&parse_mode=HTML&photo=' . $img);
+                    echo file_get_contents('https://api.telegram.org/bot'.$token.'/sendPhoto?caption=' . $caption . '&chat_id=' . $chat_id . '&parse_mode=HTML&photo=' . $img);
                 }catch (\Exception $exception){
                     echo $exception->getMessage();
                 }
