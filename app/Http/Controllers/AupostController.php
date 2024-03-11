@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuPostMetas;
 use App\Models\AuPostQues;
 use App\Models\AuPostSource;
 use App\Services\StringService;
@@ -40,8 +41,12 @@ class AupostController extends Controller
 ',$html);
                     }
                     $img='';
+                    $short=false;
                     if(isset($article['yoast_head_json']['og_image'][0]['url']))
                         $img= $article['yoast_head_json']['og_image'][0]['url'];
+                    if(isset($article['yoast_head_json']['description']))
+                        $short= $article['yoast_head_json']['description'];
+                    $this->sendImmediately($source,$link,$img,$title,$description,$short);
                     $targets=explode(',',$source->available_targets);
                     foreach ($targets as $target){
                         $rand=rand(0,100);
@@ -59,6 +64,20 @@ class AupostController extends Controller
 
                 }
             }
+        }
+    }
+    public function sendImmediately($source,$link,$img,$title,$description,$short){
+        //is telegram token available
+        if($token=AuPostMetas::where('kind','source')->where('p_id',$source->id)->where('meta_key','tg_bot')->first()){
+            $token=$token->meta_value;
+            //get telegram channel
+            if($chat_id=AuPostMetas::where('kind','source')->where('p_id',$source->id)->where('meta_key','chat_id')->first()){
+                $chat_id=$chat_id->meta_value;
+                $caption= urlencode('<a href="'.$link.'">'.$title.'</a>
+'.$short);
+                @file_get_contents('https://api.telegram.org/bot1201206140:AAFw5paUINbbvrv8lkH_GhKjpfdK1UMvQT0/sendPhoto?caption='.$caption.'&chat_id='.$chat_id.'&photo='.$img);
+            }
+
         }
     }
     public function autoPost($id){

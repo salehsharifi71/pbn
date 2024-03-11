@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Autopost;
 use App\Models\Checkers;
 use App\Services\StringService;
 use Carbon\Carbon;
