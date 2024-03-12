@@ -132,11 +132,15 @@ class AupostController extends Controller
         $keywords=[];
         $count=0;
         foreach ($phrases as $phrase){
-            if($count < 6 && count(explode(' ',$phrase))<4) {
+            if($count < 5 && count(explode(' ',$phrase))<4) {
                 array_push($keywords, $phrase);
                 $count ++;
             }
         }
+        $post->keywords=implode(',',$keywords);
+        $random_keys=array_rand($keywords,1);
+        $post->title= $post->title.' ('.$keywords[$random_keys[0]].')';
+        $post->save();
         return $keywords;
     }
 }
