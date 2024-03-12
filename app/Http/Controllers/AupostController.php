@@ -127,7 +127,7 @@ class AupostController extends Controller
         return view('forms.makeHTML');
     }
     public function test(){
-        $post=AuPostQues::whereIsNull('keywords')->inRandomOrder()->first();
+        $post=AuPostQues::whereNull('keywords')->inRandomOrder()->first();
         return $this->makeKeyword($post->title,$post->clearContent);
     }
 }
