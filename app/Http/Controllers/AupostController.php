@@ -88,7 +88,7 @@ class AupostController extends Controller
         }
     }
     public function makeKeyword($title,$description){
-        $rake = RakePlus::create($title.' '.$description, 'fa_IR');
+        $rake = RakePlus::create($title.' '.strip_tags($description), 'fa_IR');
         return  $rake->sortByScore('desc')->get();
     }
     public function autoPost($id){
