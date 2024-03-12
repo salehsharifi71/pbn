@@ -7,6 +7,7 @@ use App\Models\AuPostQues;
 use App\Models\AuPostSource;
 use App\Services\StringService;
 use Carbon\Carbon;
+use DonatelloZa\RakePlus\RakePlus;
 use Illuminate\Http\Request;
 
 class AupostController extends Controller
@@ -86,6 +87,10 @@ class AupostController extends Controller
 
         }
     }
+    public function makeKeyword($title,$description){
+        $rake = RakePlus::create($title.' '.$description, 'fa_IR');
+        return  $rake->sortByScore('desc')->get();
+    }
     public function autoPost($id){
         $post=Autopost::where('status',0)->where('source_id',$id)->first();
         if(!$post)
@@ -120,5 +125,9 @@ class AupostController extends Controller
             return view('forms.makeHTML',compact('html'));
         }
         return view('forms.makeHTML');
+    }
+    public function test(){
+        $post=AuPostQues::whereIsNull('keywords')->inRandomOrder()->first();
+        return $this->makeKeyword($post->title,$post->clearContent);
     }
 }
