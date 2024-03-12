@@ -128,6 +128,6 @@ class AupostController extends Controller
     }
     public function test(){
         $post=AuPostQues::whereNull('keywords')->inRandomOrder()->first();
-        return $this->makeKeyword($post->title,$post->clearContent);
+        return $this->makeKeyword($post->title,$post->content);
     }
 }
