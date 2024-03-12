@@ -89,7 +89,7 @@ class AupostController extends Controller
     }
     public function makeKeyword($title,$description){
         $rake = RakePlus::create($title.' '.strip_tags($description), 'fa_IR');
-        return  $rake->sortByScore('desc')->scores();
+        return  $rake->sortByScore('desc')->get();
     }
     public function autoPost($id){
         $post=Autopost::where('status',0)->where('source_id',$id)->first();
@@ -128,6 +128,15 @@ class AupostController extends Controller
     }
     public function test(){
         $post=AuPostQues::whereNull('keywords')->inRandomOrder()->first();
-        return $this->makeKeyword($post->title,$post->content);
+        $phrases = $this->makeKeyword($post->title,$post->content);
+        $keywords=[];
+        $count=0;
+        foreach ($phrases as $phrase){
+            if($count < 6 && count(explode(' ',$phrase))<4) {
+                array_push($keywords, $phrase);
+                $count ++;
+            }
+        }
+        return $keywords;
     }
 }
