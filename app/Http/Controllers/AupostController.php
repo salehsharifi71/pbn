@@ -138,8 +138,8 @@ class AupostController extends Controller
             }
         }
         $post->keywords=implode(',',$keywords);
-        $random_keys=array_rand($keywords,1);
-        $post->title= $post->title.' ('.$keywords[$random_keys[0]].')';
+
+        $post->title= $post->title.' ('.$keywords[rand(0,count($keywords)-1)].')';
         $post->save();
         return $keywords;
     }
