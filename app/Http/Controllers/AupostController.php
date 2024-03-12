@@ -127,20 +127,22 @@ class AupostController extends Controller
         return view('forms.makeHTML');
     }
     public function test(){
-        $post=AuPostQues::whereNull('keywords')->inRandomOrder()->first();
-        $phrases = $this->makeKeyword($post->title,$post->content);
-        $keywords=[];
-        $count=0;
-        foreach ($phrases as $phrase){
-            if($count < 5 && count(explode(' ',$phrase))<4) {
-                array_push($keywords, $phrase);
-                $count ++;
+        $posts=AuPostQues::whereNull('keywords')->inRandomOrder()->get();
+        foreach ($posts as $post) {
+            $phrases = $this->makeKeyword($post->title, $post->content);
+            $keywords = [];
+            $count = 0;
+            foreach ($phrases as $phrase) {
+                if ($count < 5 && count(explode(' ', $phrase)) < 4) {
+                    array_push($keywords, $phrase);
+                    $count++;
+                }
             }
-        }
-        $post->keywords=implode(',',$keywords);
+            $post->keywords = implode(',', $keywords);
 
-        $post->title= $post->title.' ('.$keywords[rand(0,count($keywords)-1)].')';
-        $post->save();
+            $post->title = $post->title . ' (' . $keywords[rand(0, count($keywords) - 1)] . ')';
+            $post->save();
+        }
         return $keywords;
     }
 }
