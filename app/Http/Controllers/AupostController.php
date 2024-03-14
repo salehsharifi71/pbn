@@ -92,8 +92,8 @@ class AupostController extends Controller
         $rake = RakePlus::create($title.' '.strip_tags($description), 'fa_IR');
         return  $rake->sortByScore('desc')->get();
     }
-    public function postSend(){
-        $post=AuPostQues::where('id',\request('id'))->firstOrFail();
+    public function postSend($id){
+        $post=AuPostQues::where('id',$id)->firstOrFail();
         $post->status=100;
         $post->save();
         if($target=AuPostTargets::where('slug',$post->target)->where('is_active',1)->first()){
@@ -111,7 +111,7 @@ class AupostController extends Controller
 ',$post->nonhtml);
                     $type = pathinfo($post->img, PATHINFO_EXTENSION);
                     $data = @file_get_contents($post->img);
-                    $post->base64img='data:image/' . $type . ';base64,' . base64_encode($data);
+//                    $post->base64img='data:image/' . $type . ';base64,' . base64_encode($data);
                     $post->link='<a href="'.$post->url.'">'.substr($post->title,0,strpos($post->title,'(')).'</a>';
                     return $post;
                 }
