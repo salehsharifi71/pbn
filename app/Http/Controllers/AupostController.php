@@ -92,8 +92,8 @@ class AupostController extends Controller
         $rake = RakePlus::create($title.' '.strip_tags($description), 'fa_IR');
         return  $rake->sortByScore('desc')->get();
     }
-    public function postSend($id){
-        $post=AuPostQues::where('id',$id)->firstOrFail();
+    public function postSend(){
+        $post=AuPostQues::where('id',\request('id'))->firstOrFail();
         $post->status=100;
         $post->save();
         if($target=AuPostTargets::where('slug',$post->target)->where('is_active',1)->first()){
