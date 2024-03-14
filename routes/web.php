@@ -18,7 +18,7 @@ use App\Http\Controllers\AupostController;
 
 Route::any('/check-domains-status',[AutomationController::class,'chkDomain'])->name('chkDomain');
 Route::any('/auto-post-script/{id}',[AupostController::class,'getNewPost'])->name('getNewPost');
-Route::post('/post-send/',[AupostController::class,'postSend'])->name('postSend');
+Route::any('/post-send/',[AupostController::class,'postSend'])->name('postSend');
 Route::any('/generateHTML',[AupostController::class,'generateHTML'])->name('generateHTML');
 Route::any('/getContentByCron',[AupostController::class,'getContentByCron']);
 Route::any('/test',[AupostController::class,'test']);
