@@ -99,6 +99,7 @@ class AupostController extends Controller
         if($target=AuPostTargets::where('slug',$post->target)->where('is_active',1)->first()){
             $target->touch();
         }
+        return 'saved';
     }
     public function getNewPost($id){
         $posts=AuPostQues::where('status',0)->where('kind',$id)->inRandomOrder()->get();
