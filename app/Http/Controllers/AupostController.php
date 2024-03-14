@@ -98,7 +98,7 @@ class AupostController extends Controller
             if($target=AuPostTargets::where('slug',$post->target)->where('is_active',1)->where('updated_at','<',Carbon::now()->subDay()->toDateTimeString())->first()){
                 if($target->kind==1){
                     $post->nonhtml=strip_tags($post->content);
-                    $post->nonhtml=str_replace('\n','
+                    $post->nonhtml=str_replace("\n",'
 ',$post->nonhtml);
                     $type = pathinfo($post->img, PATHINFO_EXTENSION);
                     $data = @file_get_contents($post->img);
