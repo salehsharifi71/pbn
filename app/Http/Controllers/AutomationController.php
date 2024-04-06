@@ -40,74 +40,83 @@ class AutomationController extends Controller
         if (is_array($data) && !empty($data)) {
             return true;
         }else{
-            $url = "https://whois.nic.ir/WHOIS?name=".$domain;
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            try {
+                $url = "https://whois.nic.ir/WHOIS?name=" . $domain;
+                $curl = curl_init($url);
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-            //for debug only!
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                //for debug only!
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
-            $config['useragent'] = 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0';
+                $config['useragent'] = 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0';
 
-            curl_setopt($curl, CURLOPT_USERAGENT, $config['useragent']);
-            curl_setopt($curl, CURLOPT_REFERER, 'https://whois.nic.ir/');
+                curl_setopt($curl, CURLOPT_USERAGENT, $config['useragent']);
+                curl_setopt($curl, CURLOPT_REFERER, 'https://whois.nic.ir/');
 
-            $resp = curl_exec($curl);
+                $resp = curl_exec($curl);
 
-            $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-            // API ERROR
-            if ($status === 409) {
-                // 409	Concurrent requests limit exceeded. Please, try again or upgrade to the paid plan
-                // throw new \Exception('API: ' . $resp);
-                die;
-            } else if ($status === 404) {
-                // 404	The requested URL is not reachable. Please, check it in your browser or try again.
-                die;
-            } else if ($status === 403) {
-                // 403	The API token is wrong or you have exceeded the API credits limit.
-                throw new \Exception('API: ' . $resp);
-            }
+                // API ERROR
+                if ($status === 409) {
+                    // 409	Concurrent requests limit exceeded. Please, try again or upgrade to the paid plan
+                    // throw new \Exception('API: ' . $resp);
+                    die;
+                } else if ($status === 404) {
+                    // 404	The requested URL is not reachable. Please, check it in your browser or try again.
+                    die;
+                } else if ($status === 403) {
+                    // 403	The API token is wrong or you have exceeded the API credits limit.
+                    throw new \Exception('API: ' . $resp);
+                }
 
 
-            $regex = '#<\s*?pre\b[^>]*>(.*?)</pre\b[^>]*>#s';
-            preg_match_all($regex,$resp,$matches);
-            print_r($matches[0][0]);
-            curl_close($curl);
+                $regex = '#<\s*?pre\b[^>]*>(.*?)</pre\b[^>]*>#s';
+                preg_match_all($regex, $resp, $matches);
+                print_r($matches[0][0]);
+                curl_close($curl);
 
-            if ($matches[0][0]){
-                if (strpos($matches[0][0], 'no entries found') !== false) {
-                    return true;
-                }else{
+                if ($matches[0][0]) {
+                    if (strpos($matches[0][0], 'no entries found') !== false) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
                     return false;
                 }
-            }else{
+            }catch (\Exception $exception){
                 return false;
             }
         }
     }
     public function QueryWhoisServer($whoisserver, $domain) {
-        $port = 43;$fp = @fsockopen($whoisserver, $port);
-        fputs($fp, $domain . "\r\n");
-        $out = "";
-        while(!feof($fp)){
-            $out .= fgets($fp);
-        }
-        fclose($fp);
+        try {
+            $port = 43;
+            $fp = @fsockopen($whoisserver, $port);
+            fputs($fp, $domain . "\r\n");
+            $out = "";
+            while (!feof($fp)) {
+                $out .= fgets($fp);
+            }
+            fclose($fp);
 
-        $res = "";
-        if((strpos(strtolower($out), "error") === FALSE) && (strpos(strtolower($out), "not allocated") === FALSE)) {
-            $rows = explode("\n", $out);
-            foreach($rows as $row) {
-                $row = trim($row);
-                if(($row != '') && ($row[0] != '#') && ($row[0] != '%')) {
-                    $res .= $row."\n";
+            $res = "";
+            if ((strpos(strtolower($out), "error") === FALSE) && (strpos(strtolower($out), "not allocated") === FALSE)) {
+                $rows = explode("\n", $out);
+                foreach ($rows as $row) {
+                    $row = trim($row);
+                    if (($row != '') && ($row[0] != '#') && ($row[0] != '%')) {
+                        $res .= $row . "\n";
+                    }
                 }
             }
+            return $res;
+        }catch (\Exception $exception){
+            return '';
         }
-        return $res;
     }
     public function LookupDomain($domain){
         $whoisservers = array(
