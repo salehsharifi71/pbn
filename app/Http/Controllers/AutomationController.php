@@ -25,11 +25,11 @@ class AutomationController extends Controller
                 $domain->save();
 
             }else{
-                if($token=AuPostMetas::where('kind','source')->where('ap_id',2)->where('meta_key','tg_bot')->first()) {
-
-                    $token = $token->meta_value;
-                    @file_get_contents('https://api.telegram.org/bot'.$token.'/sendMessage?text=you can not register : '.$domain.'&chat_id=123969916');
-                }
+//                if($token=AuPostMetas::where('kind','source')->where('ap_id',2)->where('meta_key','tg_bot')->first()) {
+//
+//                    $token = $token->meta_value;
+//                    @file_get_contents('https://api.telegram.org/bot'.$token.'/sendMessage?text=you can not register : '.$domain.'&chat_id=123969916');
+//                }
                 $domain->touch();
             }
         }
