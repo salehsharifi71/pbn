@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuPostMetas;
 use App\Models\Checkers;
 use App\Services\StringService;
 use Carbon\Carbon;
@@ -15,10 +16,20 @@ class AutomationController extends Controller
         $domains=Checkers::where('status',0)->where('updated_at','<',Carbon::now()->subDays(2))->take(2)->get();
         foreach ($domains as $domain){
             if($this->LookupDomain($domain)){
+                if($token=AuPostMetas::where('kind','source')->where('ap_id',2)->where('meta_key','tg_bot')->first()) {
+
+                    $token = $token->meta_value;
+                    @file_get_contents('https://api.telegram.org/bot'.$token.'/sendMessage?text=you can register : '.$domain.'&chat_id=123969916');
+                }
                 $domain->status=1;
                 $domain->save();
 
             }else{
+                if($token=AuPostMetas::where('kind','source')->where('ap_id',2)->where('meta_key','tg_bot')->first()) {
+
+                    $token = $token->meta_value;
+                    @file_get_contents('https://api.telegram.org/bot'.$token.'/sendMessage?text=you can not register : '.$domain.'&chat_id=123969916');
+                }
                 $domain->touch();
             }
         }
