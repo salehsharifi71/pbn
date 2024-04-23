@@ -113,10 +113,13 @@ class AupostController extends Controller
                     $data = @file_get_contents($post->img);
 //                    $post->base64img='data:image/' . $type . ';base64,' . base64_encode($data);
                     $post->link='<a href="'.$post->url.'">'.substr($post->title,0,strpos($post->title,'(')).'</a>';
+                    if(request()->has('html'))
+                        return (view('forms.postHtml',compact('post')));
                     return $post;
                 }
             }
         }
+
         return json_encode([]);
 
 
